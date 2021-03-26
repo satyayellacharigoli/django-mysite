@@ -76,21 +76,21 @@ class BranchViewSets(viewsets.ModelViewSet):
         except Branch.DoesNotExist:
             return HttpResponse("No data found.")
 
-    # @csrf_exempt
-    # def update(request, pk=None):
-    #     try:
-    #         queryset =  Branch.objects.get(id=pk)
-    #         json_data = request.body
-    #         stream = io.BytesIO(json_data)
-    #         req_data = JSONParser().parse(stream)
-    #         serializer = BranchSerializer(queryset,data=request)
-    #         if serializer.is_valid():
-    #             serializer.save()
-    #             return HttpResponse('Branch updated successfully.')
-    #         else:
-    #             return HttpResponse('failed.')
-    #     except Branch.DoesNotExist:
-    #         return HttpResponse("No data found.")
+    @csrf_exempt
+    def update(request, pk=None):
+        try:
+            queryset =  Branch.objects.get(id=pk)
+            json_data = request.body
+            stream = io.BytesIO(json_data)
+            req_data = JSONParser().parse(stream)
+            serializer = BranchSerializer(queryset,data=req_data)
+            if serializer.is_valid():
+                serializer.save()
+                return HttpResponse('Branch updated successfully.')
+            else:
+                return HttpResponse('failed.')
+        except Branch.DoesNotExist:
+            return HttpResponse("No data found.")
 
     @csrf_exempt
     def destroy(request, pk=None):
